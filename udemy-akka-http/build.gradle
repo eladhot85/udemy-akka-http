@@ -1,0 +1,16 @@
+
+apply plugin: 'scala'
+apply plugin: 'project-report'
+
+
+dependencies {
+    implementation "com.typesafe.akka:akka-stream_$ver.scalaBase:$ver.akkaVersion"
+    implementation "com.typesafe.akka:akka-http_$ver.scalaBase:$ver.akkaHttpVersion"
+    implementation "com.typesafe.akka:akka-http-spray-json_$ver.scalaBase:$ver.akkaHttpVersion"
+
+
+    implementation "com.typesafe.akka:akka-http-testkit_$ver.scalaBase:$ver.akkaHttpVersion"
+    implementation "com.typesafe.akka:akka-testkit_$ver.scalaBase:$ver.akkaVersion"
+    implementation "org.scalatest:scalatest_$ver.scalaBase:$ver.scalaTestVersion"
+
+}

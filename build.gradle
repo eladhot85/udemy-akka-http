@@ -1,0 +1,38 @@
+apply from: "$rootDir/versions.gradle"
+group 'com.eladhot85.udemy.akkastreams'
+
+
+version = 'LOCAL-SNAPSHOT'
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+         
+    }
+}
+
+subprojects { sub ->
+    group rootProject.group
+    version rootProject.version
+
+    buildscript {
+        repositories {
+            mavenCentral()
+            
+        }
+    }
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+
+
+    repositories {
+        mavenCentral()
+         
+    }
+
+
+}

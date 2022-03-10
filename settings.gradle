@@ -1,0 +1,3 @@
+rootProject.name = 'udemy-akka-streams'
+include 'udemy-akka-http'
+

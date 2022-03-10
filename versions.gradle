@@ -1,0 +1,10 @@
+ext {
+  ver = [
+         akkaVersion : '2.5.20',
+         akkaHttpVersion : '10.1.7',
+         scalaTestVersion : '3.0.5',
+         scalaBase : '2.12'
+
+
+  ]
+}
