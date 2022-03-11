@@ -1,5 +1,5 @@
 apply from: "$rootDir/versions.gradle"
-group 'com.eladhot85.udemy.akkastreams'
+group 'com.eladhot85.udemy.akkahttp'
 
 
 version = 'LOCAL-SNAPSHOT'
