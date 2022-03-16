@@ -122,14 +122,14 @@ val simplifiedGuitarServerRoute =
           (guitarDB ? FindGuitar(guitarId)).mapTo[Option[Guitar]]
           .map(_.toJson.prettyPrint)
           .map(toHttpEntity))
+      } ~
+      pathEndOrSingleSlash {
+        complete(
+          (guitarDB ? FindAllGuitars).mapTo[List[Guitar]]
+            .map(_.toJson.prettyPrint)
+            .map(toHttpEntity))
       }
-  } ~
-    pathEndOrSingleSlash {
-      complete(
-        (guitarDB ? FindAllGuitars).mapTo[List[Guitar]]
-        .map(_.toJson.prettyPrint)
-        .map(toHttpEntity))
-    }
+  }
 
 
 
