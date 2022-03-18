@@ -101,7 +101,7 @@ object HighLevelExercise extends App with PersonJsonProtocol {
             case Success(person) =>
               log.info("Got person " + person)
               createPerson(person)
-              complete(personFuture.map(_ => StatusCodes.OK)
+              complete(personFuture.map(_ => StatusCodes.OK))
             case Failure(ex) =>
               log.warning("Something failed with fetching person from the entity:" + ex)
               failWith(ex)
