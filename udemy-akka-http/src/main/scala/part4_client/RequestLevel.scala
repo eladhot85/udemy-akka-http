@@ -2,31 +2,32 @@ package part4_client
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpMethod, HttpMethods, HttpRequest, HttpResponse, Uri}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpMethods, HttpRequest, Uri}
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Sink, Source}
-
-import scala.util.{Failure, Success}
+import akka.stream.scaladsl.Source
 import spray.json._
 
-object ConnectionLevel extends App with PaymentJsonProtocol {
-  implicit val system = ActorSystem("ConnectionLevel")
+import scala.util.{Failure, Success}
+
+object RequestLevel extends App with PaymentJsonProtocol {
+  implicit val system = ActorSystem("RequestLevel")
   implicit val mat = ActorMaterializer()
   import system.dispatcher
 
-  val connectionFlow = Http().outgoingConnection("www.google.com")
+  val responseFuture = Http().singleRequest(HttpRequest(uri = "http://www.google.com"))
+  responseFuture.onComplete{
+    case Success(response) =>
+      response.discardEntityBytes()
+      println(s"The request was successful and retured: $response")
+    case Failure(ex) =>
+      println(s"The request failed with : $ex")
 
-  def oneOffRequest(request: HttpRequest) =
-    Source.single(request).via(connectionFlow).runWith(Sink.head)
-
-  oneOffRequest(HttpRequest()).onComplete{
-    case Success(response) => println(s"got successful response: $response")
-    case Failure(ex) => println(s"sending request failed with exception $ex")
   }
 
   /*
-  A small payment system
+  payment system
    */
+
   import PaymentSystemDomain._
   val creditCards = List(
     CreditCard("4242-4242-4242-4242","424","tx-test-account"),
@@ -39,19 +40,17 @@ object ConnectionLevel extends App with PaymentJsonProtocol {
   val serverHttpRequests = paymentRequests.map(paymentRequest =>
     HttpRequest(
       HttpMethods.POST,
-      uri = Uri("/api/payments"),
+      uri = "http://localhost:8080/api/payments",
       entity = HttpEntity(
         ContentTypes.`application/json`,
         paymentRequest.toJson.prettyPrint
       )
     )
   )
-
   Source(serverHttpRequests)
-    .via(Http().outgoingConnection("localhost",8080))
-    .to(Sink.foreach[HttpResponse](println))
-    .run()
+    .mapAsync(10)(request=> Http().singleRequest(request)) //or mapAsyncUnordered
+    .runForeach(println)
 
 
-  //used for long-lived request
+  //used for low volume + low latency requests
 }
