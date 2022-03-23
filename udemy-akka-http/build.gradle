@@ -8,6 +8,8 @@ dependencies {
     implementation "com.typesafe.akka:akka-http_$ver.scalaBase:$ver.akkaHttpVersion"
     implementation "com.typesafe.akka:akka-http-spray-json_$ver.scalaBase:$ver.akkaHttpVersion"
 
+    //JWT
+    implementation "com.pauldijou:jwt-spray-json_$ver.scalaBase:$ver.jwtScalaVersion"
 
     implementation "com.typesafe.akka:akka-http-testkit_$ver.scalaBase:$ver.akkaHttpVersion"
     implementation "com.typesafe.akka:akka-testkit_$ver.scalaBase:$ver.akkaVersion"
